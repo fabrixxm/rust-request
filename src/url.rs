@@ -26,7 +26,7 @@ impl Url {
             }
         };
 
-        let protocol = match &*parsed_url.scheme {
+        let protocol = match &*parsed_url.scheme() {
             "http" => Protocol::HTTP,
             "https" => Protocol::HTTPS,
             _ => {
@@ -35,7 +35,7 @@ impl Url {
                 return Err(err);
             }
         };
-        
+
         let host = match parsed_url.domain() {
             Some(domain) => domain,
             None => {
@@ -57,23 +57,22 @@ impl Url {
         };
 
         let mut path = String::new();
-        match parsed_url.path() {
-            Some(p) => {
-                for x in p.iter() {
-                    path.push_str(&format!("/{}", x));
-                }
+        path.push_str(parsed_url.path());
+
+        match parsed_url.query() {
+            Some(q) => {
+                path.push_str("?");
+                path.push_str(q);
             }
-            None => {
-                path.push_str("/");
-            }
-        };
-        
+            None => ()
+        }
+
         return Ok(Url {
             protocol: protocol,
             host: host.to_string(),
             port: port,
             path: path
         });
-        
+
     }
 }

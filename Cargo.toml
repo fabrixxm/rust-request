@@ -11,5 +11,5 @@ readme = "README.md"
 keywords = ["request", "http", "client", "hyper", "postman"]
 
 [dependencies]
-url = "0.5.9"
+url = "1.4.0"
 openssl = "0.7.1"
